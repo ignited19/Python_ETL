@@ -1,0 +1,61 @@
+#TODO 1 Create a Person class that will have the same datafields as the expected flat file fields
+class Person:
+    def __init__(self, firstName, lastName, city, country):
+        self.firstName = firstName
+        self.lastName = lastName
+        self.city = city
+        self.country = country
+
+        global userData
+
+        userData.append(self)
+
+#TODO 2 Create a function that will read in user data and save as a string
+def openFlatFile():
+    flatFileDir = str(input("Hello! Please provide the location of the flat file to be worked on"))
+
+    try:
+        file = open(flatFileDir)
+        next(file)
+        return file
+
+    except():
+        print(f"hmm.. there appears to be an issue accessing the file at: \n {flatFileDir}")
+
+
+
+#TODO 3 Create a function that will parse data string and create user objects based on Person class. Save into list
+def parseData(file):
+    #Iterate through the file
+    lines = file.readlines()
+
+    for line in lines:
+        currentLinePipeCount = line.count('|')
+        if currentLinePipeCount != 3:
+            print("There is a field missing")
+        currentParsedLine = line.split("|")
+
+        Person(currentParsedLine[0],currentParsedLine[1],currentParsedLine[2],currentParsedLine[3])
+
+
+
+
+
+#TODO 4 Create a function that will allow data queries (i.e. display all users name that just came in
+def queryData():
+    global userData
+    userSelection = int(input("Data was imported sucessfully! Would you like to view the report? 0 = no 1 = yes"))
+
+    if userSelection == 1:
+        for person in userData:
+            print(f"firstName: {person.firstName}, lastName:{person.lastName}, country: {person.country}, city: {person.city}")
+
+
+
+
+
+userData = []
+
+currentDataFile = openFlatFile()
+parseData(currentDataFile)
+queryData()
